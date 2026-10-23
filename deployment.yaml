@@ -1,0 +1,28 @@
+
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: pdfmergersplitter-deployment
+spec:
+  replicas: 4
+  selector:
+    matchLabels:
+      app: pdfmergersplitter
+  template:
+    metadata:
+      labels:
+        app: pdfmergersplitter
+    spec:
+      containers:
+        - name: pdfmergersplitter
+          image: tsamhitha26/pdfmergersplitter:v1
+          imagePullPolicy: Always
+          ports:
+            - containerPort: 5000
+          resources:
+            requests:
+              cpu: "100m"
+              memory: "128Mi"
+            limits:
+              cpu: "500m"
+              memory: "512Mi"

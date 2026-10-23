@@ -1,0 +1,53 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>PDF Tool | Merge and Split</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+  <main class="page-shell">
+    <header class="hero">
+      <span class="eyebrow">A simple local PDF utility</span>
+      <h1>PDF <span>Merge &amp; Split</span></h1>
+      <p>Bring documents together or extract just the pages you need.</p>
+      <p class="privacy-note">Files are processed in memory and are not saved by this app. Maximum upload: 25 MB per request.</p>
+    </header>
+
+    {% with messages = get_flashed_messages(with_categories=true) %}
+      {% if messages %}
+        <div class="messages" role="status" aria-live="polite">
+          {% for category, message in messages %}<p class="message {{ category }}">{{ message }}</p>{% endfor %}
+        </div>
+      {% endif %}
+    {% endwith %}
+
+    <section class="tools" aria-label="PDF tools">
+      <article class="tool-card">
+        <div class="card-heading"><span class="icon merge-icon" aria-hidden="true">＋</span><div><h2>Merge PDFs</h2><p>Combine two or more files in order.</p></div></div>
+        <form action="{{ url_for('merge') }}" method="post" enctype="multipart/form-data">
+          <label for="merge-files">PDF files <span>(select at least 2)</span></label>
+          <input id="merge-files" name="pdf_files" type="file" accept="application/pdf,.pdf" multiple required>
+          <button type="submit">Merge and download <span aria-hidden="true">→</span></button>
+        </form>
+        <p class="hint">The merged document follows the order shown in your file picker.</p>
+      </article>
+
+      <article class="tool-card">
+        <div class="card-heading"><span class="icon split-icon" aria-hidden="true">↗</span><div><h2>Split PDF</h2><p>Extract selected pages into separate PDFs.</p></div></div>
+        <form action="{{ url_for('split') }}" method="post" enctype="multipart/form-data">
+          <label for="split-file">PDF file</label>
+          <input id="split-file" name="pdf_file" type="file" accept="application/pdf,.pdf" required>
+          <label for="page-ranges">Page numbers or ranges</label>
+          <input id="page-ranges" name="page_ranges" type="text" placeholder="Example: 1-3, 5-6" required>
+          <p class="hint field-hint">Use commas to make a separate PDF for each selection. Page numbering starts at 1.</p>
+          <button type="submit">Split and download <span aria-hidden="true">→</span></button>
+        </form>
+      </article>
+    </section>
+
+    <footer><span>Made for quick, straightforward PDF tasks.</span><span>Runs on your computer at <code>127.0.0.1:5000</code></span></footer>
+  </main>
+</body>
+</html>
